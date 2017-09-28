@@ -1,47 +1,63 @@
 (function() {
     'use strict';
 
-    // import
-    const Menu = window.Menu;
+   // import
+   let Menu = window.Menu;
+   let Form = window.Form;
 
+    /**
+     * Компонента "Форма"
+     */
     class App {
-        constructor ({el}) {
+        /**
+         * @param {Object} param0 
+         * @param {HTMLElement} param0.el
+         */
+        constructor({el}) {
+            let menu = new Menu({
+                el: document.querySelector('.js-menu'),
 
-            this.menu = new Menu({
-                el: el.querySelector('.js-menu'),
+                onPick(item) {
+                    console.log(item);
+                },
+
                 data: {
-                    title: 'Сайты',
-                    items: []
+                    title: 'SINGLE PAGE APPLICATION',
+                    items: [
+                        {
+                            href: 'https://vk.com',
+                            anchor: 'vk.com'
+                        },
+                        {
+                            href: 'https://ok.ru',
+                            anchor: 'ok.ru'
+                        },
+                        {
+                            href: 'https://yahoo.com',
+                            anchor: 'yahoo.com'
+                        },
+                        {
+                            href: 'https://yandex.ru',
+                            anchor: 'yandex.ru'
+                        }
+                    ]
                 }
             });
 
-            this.menu.setData({
-                title: 'Сайты',
-                items: [
-                    {title: 'Первый'},
-                    {
-                      title: 'Второй',
-                      items: [
-                        {title: 'Второй-первый'},  
-                        {
-                          title: 'Второй-второй',
-                          items: [
-                            {title: 'Второй-второй-1'},
-                            {title: 'Второй-второй-2'},
-                            {title: 'Второй-второй-3'}
-                          ]
-                        },  
-                      ]
-                    },
-                    {title: 'Третий'},
-                    {title: 'Четвертый'}
-                  ]
+            new Form({
+                el: el.querySelector('.js-form'),
+                onSubmit(form) {
+                    menu.addItem({
+                        href: form.getField('href').value,
+                        anchor: form.getField('anchor').value
+                    });
+                }
             });
 
+            window.menu = menu;
         }
     }
 
-    // export 
-     window.App = App;
-
+    // export
+    window.App = App;
 })();

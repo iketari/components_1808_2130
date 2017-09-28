@@ -1,3 +1,9 @@
 module.exports = {
-    "extends": "google"
+    'extends': 'google',
+    'parserOptions': {
+        'ecmaVersion': 6
+    },
+    'rules': {
+        'comma-dangle': [2, 'never']
+    }
 };

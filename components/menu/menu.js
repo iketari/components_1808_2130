@@ -1,77 +1,138 @@
 (function() {
     'use strict';
 
+    /**
+     * @typedef {Item} Тип элемента меню
+     * @prop {string} href URL
+     * @prop {string} anchor текст
+     */
+
+    /**
+     * Компонента "Меню"
+     */
     class Menu {
-        constructor({el, data}) {
-            this.$el = el;
-            this.data = data;
+        /**
+         * @constructor
+         * @param  {Object} opts
+         */
+        constructor(opts) {
+            this.el = opts.el;
+            this.data = opts.data;
+            this.onPick = opts.onPick;
 
-            this.$el          = el;
-            this.$title       = el.querySelector('.js-title');
-            this.$menuList    = el.querySelector('.js-menu-list');
+            this.render();
 
-            this.initEvents();
-        }
+            this.list = this.el.querySelector('.menu__list');
+            this.title = this.el.querySelector('.menu__title');
 
-        setData (data) {
-          this.data = data;
-          this.render();
-        }
-
-        render () {
-          this.$title.innerText = this.data.title;
-          this.renderItems(this.data.items, this.$menuList);
+            this._initEvents();
         }
 
-        renderItems(items, container) {
-          items.forEach(item => {
-            this._addItem(item, container); // пусть _addItem работает только с одним элментом
-          });
-        }
-      
-        initEvents() {
-          this.$title.addEventListener('click', this.toggleDisplayMenu.bind(this));
-          this.$menuList.addEventListener('click', this.removeItem.bind(this));
-        }
-        
-        toggleDisplayMenu() {
-          this.$el.classList.toggle('_open');
-        }
-        
-        removeItem(ev) {
-          let currentRemoveIcon = ev.target,
-              currentItem,
-              currentList;
-          
-          if (currentRemoveIcon.tagName == 'SUP') {
-            // для поддержки в IE11-
-            currentItem = currentRemoveIcon.closest('li');
-            currentList = currentItem.closest('ul');
-            currentList.removeChild(currentItem);
-          }
+        /**
+         * Добавляем элемент меню
+         * @param {Object} item
+         */
+        addItem(item) {
+            this.data.items.push(item);
+            this.render();
         }
 
-        _addItem(item, container) {
-          let itemText = item.title,
-              ulEl = document.createElement('ul'),
-              liEl = document.createElement('li'),
-              spanEl = document.createElement('span'),
-              removeIcon = document.createElement('sup');
-              
-          spanEl.textContent = itemText;
-          removeIcon.textContent = ' x';
-          
-          liEl.append(spanEl, removeIcon);
-          
-          if (item.items) { // а здесь нужно рекурсивно вызвать renderItems,
-            liEl.append(ulEl);
-            this.renderItems(item.items, ulEl); // указываем, что рендерим и куда
-          } 
-      
-          container.append(liEl);
+        /**
+         * Удаляем пункт меню из данных
+         * @param  {Object} removedItem
+         */
+        removeItem(removedItem) {
+            this.data.items = this.data.items.filter((item, index) => {
+            return index !== removedItem.index;
+            });
+            this.render();
         }
-      }
-      
-      window.Menu = Menu;
 
-})();
+        /**
+         * Создаем HTML
+         */
+        render() {
+            /**
+             * Создаем HTML элементов меню
+             * @param {Array<Item>} itmes
+             * @return {string}
+             */
+            function generateItems(itmes) {
+                return itmes.map( (item, index) => {
+                    return `
+                    <li class="pure-menu-item" data-index="${index}">
+                        <a 
+                        class="pure-menu-link"
+                        href="${item.href}"
+                        data-action="pick">
+                            ${item.anchor}
+                        </a>
+                        <i class="close" data-action="remove"></i>
+                    </li>`;
+                }).join('');
+            }
+
+            this.el.innerHTML = `
+            <div class="menu pure-menu custom-restricted-width">
+                <span class="menu__title pure-menu-heading">
+                ${this.data.title}
+                </span>
+                <ul class="menu__list pure-menu-list">
+                ${generateItems(this.data.items)}
+                </ul>
+            </div>
+            `;
+        }
+
+        /**
+        * Удаления элемента меню
+        * @param  {HTMLElement} item
+        * @private
+        */
+        _onRemoveClick(item) {
+            let index = parseInt(item.parentNode.dataset.index, 10);
+
+            this.removeItem({
+            index
+            });
+        }
+
+        /**
+        * Выбор элемента меню
+        * @param  {HTMLElement} item
+        */
+        _onPickClick(item) {
+            this.onPick(item);
+        }
+
+        /**
+        * Развешиваем события
+        */
+        _initEvents() {
+            this.el.addEventListener('click', this._onClick.bind(this));
+        }
+
+        /**
+        * Клик в любую область меню
+        * @param {Event} event
+        * @private
+        */
+        _onClick(event) {
+            event.preventDefault();
+            let item = event.target;
+
+            switch (item.dataset.action) {
+            case 'remove':
+            this._onRemoveClick(item);
+            break;
+
+            case 'pick':
+            this._onPickClick(item);
+            break;
+            }
+        }
+    }
+
+    // Export
+    window.Menu = Menu;
+})(window);
