@@ -29,7 +29,7 @@
                         type="url" name="href"
                         required="required"
                         placeholder="url"/>
-                    
+
                     <input class="form__input"
                         type="text" name="anchor"
                         required="required"
@@ -37,7 +37,6 @@
                     <button class="form__btn pure-button" type="submit">
                         Save
                     </button>
-                    
                 </fieldset>
             </form>`;
         }
@@ -69,8 +68,34 @@
         _onSubmit(event) {
             event.preventDefault();
 
-            this.onSubmit(this);
+            // this.onSubmit(this);
+            this.trigger('save', {
+                url: this.el.querySelector('input[name="href"]').value,
+                anchor: this.el.querySelector('input[name="anchor"]').value
+            });
             event.target.reset();
+        }
+
+        /**
+         * Подписка на события
+         * @param {string} eventName
+         * @param {Function} callback
+         */
+        addEventListener(eventName, callback) {
+            this.el.addEventListener(eventName, callback);
+        }
+
+        /**
+         * Генерация события на элементе
+         * @param {string} eventName
+         * @param {*} eventData
+         */
+        trigger(eventName, eventData) {
+            let event = new CustomEvent(eventName, {
+                detail: eventData
+            });
+
+            this.el.dispatchEvent(event);
         }
     }
 

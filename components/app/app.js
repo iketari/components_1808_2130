@@ -39,22 +39,23 @@
                         {
                             href: 'https://yandex.ru',
                             anchor: 'yandex.ru'
+                        },
+                        {
+                            href: 'https://yandex.ru',
+                            anchor: 'yandex.ru'
                         }
                     ]
                 }
             });
 
-            new Form({
+            let form = new Form({
                 el: el.querySelector('.js-form'),
-                onSubmit(form) {
-                    menu.addItem({
-                        href: form.getField('href').value,
-                        anchor: form.getField('anchor').value
-                    });
-                }
+                data: {}
             });
 
-            window.menu = menu;
+            form.addEventListener('save', (event) => {
+                menu.addItem(event.detail);
+            });
         }
     }
 
