@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "./node_modules/.bin/eslint components/**/*.js",
     "serve": "./node_modules/.bin/static-server .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pug": "pug components/menu/menu.pug --client --extension=pug.js --name=menuTmpl"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
   "devDependencies": {
     "eslint": "^4.1.1",
     "eslint-config-google": "^0.9.1",
+    "pug": "^2.0.0-rc.4",
     "static-server": "^2.0.5"
   }
 }

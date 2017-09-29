@@ -16,7 +16,6 @@
         constructor({el}) {
             let menu = new Menu({
                 el: document.querySelector('.js-menu'),
-
                 onPick(item) {
                     console.log(item);
                 },

@@ -1,6 +1,8 @@
 (function() {
     'use strict';
 
+    const tmpl = window.menuTmpl;
+
     /**
      * @typedef {Item} Тип элемента меню
      * @prop {string} href URL
@@ -83,7 +85,9 @@
                 return itmes.map(this.getItemHtml.bind(this)).join('');
             }
 
-            this.el.innerHTML = `
+            this.el.innerHTML = tmpl(this.data);
+            
+            `
             <div class="menu pure-menu custom-restricted-width">
                 <span class="menu__title pure-menu-heading">
                 ${this.data.title}
