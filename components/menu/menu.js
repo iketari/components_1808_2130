@@ -1,7 +1,8 @@
 (function() {
     'use strict';
 
-    const template = window.menuTmpl;
+    const template = window.menuTemplate;
+    const templateItem = window.menuItemTemplate;
 
     /**
      * @typedef {Item} Тип элемента меню
@@ -30,15 +31,16 @@
          * Добавляем элемент меню
          * @param {Object} item
          */
-        addItem(item) {            
-            let el = document.createElement('div')
+        addItem(item) {
+            let el = document.createElement('div');
             el.innerHTML = this.getItemHtml(item, this.data.items.length);
             el = el.firstElementChild;
 
             this.list.append(el);
-            el.addEventListener('animationend', () => el.classList.remove('bounce-in-left'));
+            el.addEventListener('animationend',
+                () => el.classList.remove('bounce-in-left'));
             el.classList.add('bounce-in-left');
-            
+
             this.data.items.push(item);
         }
 
@@ -59,17 +61,8 @@
          * @param {number} index
          * @return {string}
          */
-        getItemHtml (item, index) {
-            return `
-            <li class="pure-menu-item" data-index="${index}">
-                <a
-                class="pure-menu-link"
-                href="${item.href}"
-                data-action="pick">
-                    ${item.anchor}
-                </a>
-                <i class="close" data-action="remove"></i>
-            </li>`;
+        getItemHtml(item, index) {
+            return templateItem({item, index});
         }
 
         /**
@@ -91,7 +84,8 @@
             let el = /** @type {Element} */ item.parentNode;
 
             let index = parseInt(item.parentNode.dataset.index, 10);
-            el.addEventListener('animationend', this.removeItem.bind(this, {index}));
+            el.addEventListener('animationend',
+                this.removeItem.bind(this, {index}));
             el.classList.add('bounce-out-right');
         }
 
