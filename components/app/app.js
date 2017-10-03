@@ -14,37 +14,12 @@
          * @param {HTMLElement} param0.el
          */
         constructor({el}) {
-            let menu = new Menu({
+            this.menu = new Menu({
                 el: document.querySelector('.js-menu'),
                 onPick(item) {
                     console.log(item);
                 },
-
-                data: {
-                    title: 'SINGLE PAGE APPLICATION',
-                    items: [
-                        {
-                            href: 'https://vk.com',
-                            anchor: 'vk.com'
-                        },
-                        {
-                            href: 'https://ok.ru',
-                            anchor: 'ok.ru'
-                        },
-                        {
-                            href: 'https://yahoo.com',
-                            anchor: 'yahoo.com'
-                        },
-                        {
-                            href: 'https://yandex.ru',
-                            anchor: 'yandex.ru'
-                        },
-                        {
-                            href: 'https://yandex.ru',
-                            anchor: 'yandex.ru'
-                        }
-                    ]
-                }
+                data: {}
             });
 
             let form = new Form({
@@ -53,8 +28,50 @@
             });
 
             form.addEventListener('save', (event) => {
-                menu.addItem(event.detail);
+                this.menu.addItem(event.detail);
+
+                this.uploadData();
             });
+
+            this.loadData();
+        }
+
+        /**
+         * Load data from server
+         */
+        loadData() {
+            const url = 'https://components2510.firebaseio.com/menu1808/-KvYnwMT8fBqPu7_Qdqr.json';
+            const xhr = new XMLHttpRequest();
+
+            xhr.addEventListener('readystatechange', (event) => {
+                if (xhr.readyState === 4) {
+                    if (xhr.status !== 200) {
+                        console.error('Сетевая ошибка', xhr);
+                    } else {
+                        const resp = xhr.responseText;
+                        this.menu.setData(JSON.parse(resp));
+                    }
+                }
+            });
+
+            xhr.open('GET', url, true);
+            xhr.send();
+        }
+
+        /**
+         * Upload data to the server
+         */
+        uploadData() {
+            const url = 'https://components2510.firebaseio.com/menu1808/-KvYnwMT8fBqPu7_Qdqr.json';
+            const xhr = new XMLHttpRequest();
+
+            xhr.open('PUT', url, true);
+
+            xhr.onload = (event) => {
+                console.log('DONE!');
+            };
+
+            xhr.send(JSON.stringify(this.menu.data));
         }
     }
 

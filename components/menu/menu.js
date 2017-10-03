@@ -22,8 +22,6 @@
             this.el = opts.el;
             this.data = opts.data;
             this.onPick = opts.onPick;
-
-            this.render();
             this._initEvents();
         }
 
@@ -41,6 +39,15 @@
          */
         get title() {
             return this.el.querySelector('.menu__title');
+        }
+
+        /**
+         * Обновление состояния меню
+         * @param {Object} data 
+         */
+        setData (data) {
+            this.data = data;
+            this.render();
         }
 
         /**
