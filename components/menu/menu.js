@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    const tmpl = window.menuTmpl;
+    const template = window.menuTmpl;
 
     /**
      * @typedef {Item} Тип элемента меню
@@ -62,7 +62,7 @@
         getItemHtml (item, index) {
             return `
             <li class="pure-menu-item" data-index="${index}">
-                <a 
+                <a
                 class="pure-menu-link"
                 href="${item.href}"
                 data-action="pick">
@@ -73,30 +73,10 @@
         }
 
         /**
-         * Создаем HTML
+         * Обновляет HTML в элементе
          */
         render() {
-            /**
-             * Создаем HTML элементов меню
-             * @param {Array<Item>} itmes
-             * @return {string}
-             */
-            let generateItems = (itmes) => {
-                return itmes.map(this.getItemHtml.bind(this)).join('');
-            }
-
-            this.el.innerHTML = tmpl(this.data);
-            
-            `
-            <div class="menu pure-menu custom-restricted-width">
-                <span class="menu__title pure-menu-heading">
-                ${this.data.title}
-                </span>
-                <ul class="menu__list pure-menu-list">
-                ${generateItems(this.data.items)}
-                </ul>
-            </div>
-            `;
+            this.el.innerHTML = template(this.data);
 
             this.list = this.el.querySelector('.menu__list');
             this.title = this.el.querySelector('.menu__title');
