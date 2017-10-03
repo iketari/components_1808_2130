@@ -28,6 +28,22 @@
         }
 
         /**
+         * Возвращает HTML элемент списка меню
+         * @return {HTMLUListElement}
+         */
+        get list() {
+            return this.el.querySelector('.menu__list');
+        }
+
+        /**
+         * Возвращает HTML элемент заголовка меню
+         * @return {HTMLUListElement}
+         */
+        get title() {
+            return this.el.querySelector('.menu__title');
+        }
+
+        /**
          * Добавляем элемент меню
          * @param {Object} item
          */
@@ -70,9 +86,6 @@
          */
         render() {
             this.el.innerHTML = template(this.data);
-
-            this.list = this.el.querySelector('.menu__list');
-            this.title = this.el.querySelector('.menu__title');
         }
 
         /**

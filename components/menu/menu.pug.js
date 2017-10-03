@@ -7,14 +7,14 @@ var pug_match_html=/["&<>]/;function menuTemplate(locals) {var pug_html = "", pu
   if ('number' == typeof $$obj.length) {
       for (var index = 0, $$l = $$obj.length; index < $$l; index++) {
         var item = $$obj[index];
-pug_html = pug_html + "\u003Cli" + (" class=\"pure-menu-item\""+pug_attr("data-item", index, true, false)) + "\u003E\u003Ca" + (" class=\"pure-menu-link\""+pug_attr("href", item.href, true, false)+" data-action=\"pick\"") + "\u003E" + (pug_escape(null == (pug_interp = item.anchor) ? "" : pug_interp)) + "\u003C\u002Fa\u003E\u003Ci class=\"close\" data-action=\"remove\"\u003E\u003C\u002Fi\u003E\u003C\u002Fli\u003E";
+pug_html = pug_html + "\u003Cli" + (" class=\"pure-menu-item\""+pug_attr("data-index", index, true, false)) + "\u003E\u003Ca" + (" class=\"pure-menu-link\""+pug_attr("href", item.href, true, false)+" data-action=\"pick\"") + "\u003E" + (pug_escape(null == (pug_interp = item.anchor) ? "" : pug_interp)) + "\u003C\u002Fa\u003E\u003Ci class=\"close\" data-action=\"remove\"\u003E\u003C\u002Fi\u003E\u003C\u002Fli\u003E";
       }
   } else {
     var $$l = 0;
     for (var index in $$obj) {
       $$l++;
       var item = $$obj[index];
-pug_html = pug_html + "\u003Cli" + (" class=\"pure-menu-item\""+pug_attr("data-item", index, true, false)) + "\u003E\u003Ca" + (" class=\"pure-menu-link\""+pug_attr("href", item.href, true, false)+" data-action=\"pick\"") + "\u003E" + (pug_escape(null == (pug_interp = item.anchor) ? "" : pug_interp)) + "\u003C\u002Fa\u003E\u003Ci class=\"close\" data-action=\"remove\"\u003E\u003C\u002Fi\u003E\u003C\u002Fli\u003E";
+pug_html = pug_html + "\u003Cli" + (" class=\"pure-menu-item\""+pug_attr("data-index", index, true, false)) + "\u003E\u003Ca" + (" class=\"pure-menu-link\""+pug_attr("href", item.href, true, false)+" data-action=\"pick\"") + "\u003E" + (pug_escape(null == (pug_interp = item.anchor) ? "" : pug_interp)) + "\u003C\u002Fa\u003E\u003Ci class=\"close\" data-action=\"remove\"\u003E\u003C\u002Fi\u003E\u003C\u002Fli\u003E";
     }
   }
 }).call(this);

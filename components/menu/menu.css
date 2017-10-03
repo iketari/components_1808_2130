@@ -52,11 +52,13 @@
 }
 
 .bounce-out-right {
-	animation: bounce-out-right 1.5s both;
+  animation: bounce-out-right 1.5s both;
+  animation-fill-mode: both;
 }
 
 .bounce-in-left {
-	animation: bounce-in-left 1.1s both;
+  animation: bounce-in-left 1.1s both;
+  animation-fill-mode: forward;
 }
 
 /* ----------------------------------------------
