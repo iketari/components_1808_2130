@@ -1,64 +1,64 @@
-(function() {
-    'use strict';
-
-   // import
-   let Menu = window.Menu;
-   let Form = window.Form;
-   let LinksService = window.LinksService;
+// import
 
 
+// ES2015 Modules
+import {Menu} from './../menu/menu';
+
+let Form = window.Form;
+let LinksService = window.LinksService;
+
+/**
+ * Компонента "Форма"
+ */
+class App {
     /**
-     * Компонента "Форма"
+     * @param {Object} param0 
+     * @param {HTMLElement} param0.el
      */
-    class App {
-        /**
-         * @param {Object} param0 
-         * @param {HTMLElement} param0.el
-         */
-        constructor({el}) {
-            this.menu = new Menu({
-                el: document.querySelector('.js-menu'),
-                onPick(item) {
-                    console.log(item);
-                },
-                data: {}
-            });
+    constructor({el}) {
+        this.menu = new Menu({
+            el: document.querySelector('.js-menu'),
+            onPick(item) {
+                console.log(item);
+            },
+            data: {}
+        });
 
-            let form = new Form({
-                el: el.querySelector('.js-form'),
-                data: {}
-            });
+        let form = new Form({
+            el: el.querySelector('.js-form'),
+            data: {}
+        });
 
-            form.addEventListener('save', (event) => {
-                this.menu.addItem(event.detail);
+        form.addEventListener('save', (event) => {
+            this.menu.addItem(event.detail);
 
-                LinksService.putLinks(this.menu.data)
-                    .then(this._updateMenu.bind(this))
-                    .then(this._onMenuUpdate.bind(this))
-                    .catch(() => {
-                        console.log('Что-то пошло не так!');
-                    });
-            });
+            LinksService.putLinks(this.menu.data)
+                .then(this._updateMenu.bind(this))
+                .then(this._onMenuUpdate.bind(this))
+                .catch(() => {
+                    console.log('Что-то пошло не так!');
+                });
+        });
 
-            LinksService.getLinks()
-            .then(this._updateMenu.bind(this))
-            .catch(() => {
-                console.log('Что-то пошло не так!');
-            });
-        }
-
-        /**
-         * @param {*} linksData 
-         * @return {Promise<undefined>}
-         */
-        _updateMenu(linksData) {
-            return new Promise((resolve, reject) => {
-                this.menu.setData(linksData);
-                resolve();
-            });
-        }
+        LinksService.getLinks()
+        .then(this._updateMenu.bind(this))
+        .catch(() => {
+            console.log('Что-то пошло не так!');
+        });
     }
 
-    // export
-    window.App = App;
-})();
+    /**
+     * @param {*} linksData 
+     * @return {Promise<undefined>}
+     */
+    _updateMenu(linksData) {
+        return new Promise((resolve, reject) => {
+            this.menu.setData(linksData);
+            resolve();
+        });
+    }
+}
+
+// export
+window.App = App;
+
