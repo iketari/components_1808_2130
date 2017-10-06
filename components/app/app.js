@@ -4,9 +4,10 @@
    // import
    let Menu = window.Menu;
    let Form = window.Form;
+   let LinksService = window.LinksService;
 
     /**
-     * Компонента "Форма"
+     * Контроллер приложения
      */
     class App {
         /**
@@ -30,48 +31,14 @@
             form.addEventListener('save', (event) => {
                 this.menu.addItem(event.detail);
 
-                this.uploadData();
+                LinksService.putLinks(this.menu.data, (data) => {
+                    this.menu.setData(data);
+                });
             });
 
-            this.loadData();
-        }
-
-        /**
-         * Load data from server
-         */
-        loadData() {
-            const url = 'https://components2510.firebaseio.com/menu1808/-KvYnwMT8fBqPu7_Qdqr.json';
-            const xhr = new XMLHttpRequest();
-
-            xhr.addEventListener('readystatechange', (event) => {
-                if (xhr.readyState === 4) {
-                    if (xhr.status !== 200) {
-                        console.error('Сетевая ошибка', xhr);
-                    } else {
-                        const resp = xhr.responseText;
-                        this.menu.setData(JSON.parse(resp));
-                    }
-                }
+            LinksService.getLinks((linksData) => {
+                this.menu.setData(linksData);
             });
-
-            xhr.open('GET', url, true);
-            xhr.send();
-        }
-
-        /**
-         * Upload data to the server
-         */
-        uploadData() {
-            const url = 'https://components2510.firebaseio.com/menu1808/-KvYnwMT8fBqPu7_Qdqr.json';
-            const xhr = new XMLHttpRequest();
-
-            xhr.open('PUT', url, true);
-
-            xhr.onload = (event) => {
-                console.log('DONE!');
-            };
-
-            xhr.send(JSON.stringify(this.menu.data));
         }
     }
 
